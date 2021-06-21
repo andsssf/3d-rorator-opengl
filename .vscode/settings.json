@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.build": "plaintext",
+        "cmath": "cpp",
+        "random": "cpp"
+    }
+}
