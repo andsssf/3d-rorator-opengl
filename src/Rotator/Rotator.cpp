@@ -1,6 +1,5 @@
 #include "Rotator.h"
 #include "GL/glew.h"
-#include <iostream>
 #include <math.h>
 
 using namespace std;
@@ -20,22 +19,20 @@ void Rotator::draw() {
 
 void Rotator::drawFace(Point p1, Point p2, Point p3, Point p4) {
     Point n = cross((p2 - p1), (p4 - p2));
-    // Point n = cross(p3 - p2, p1 - p2);
     n.norm();
-
-    // cout << (p2 - p1) * n << " " << (p4 - p2) * n << endl;
     
     // 画出面的法向量
-    glBegin(GL_LINES);
-    glColor3f(1, 0, 0);
-    Point b = p4;
-    Point e = b + n * 0.5;
-    glVertex3f(b.x, b.y, b.z);
-    glVertex3f(e.x, e.y, e.z);
-    glEnd();
+    // glBegin(GL_LINES);
+    // glColor3f(1, 0, 0);
+    // Point b = p4;
+    // Point e = b + n * 0.5;
+    // glVertex3f(b.x, b.y, b.z);
+    // glVertex3f(e.x, e.y, e.z);
+    // glEnd();
 
     glBegin(GL_QUADS);
     glColor3f(ROTATOR_COLOR);
+    // 设置法向量
     glNormal3f(n.x, n.y, n.z);
 
     glVertex3f(p1.x, p1.y, p1.z);

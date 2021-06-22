@@ -42,7 +42,7 @@ void init() {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glClearColor(0.1, 0.1, 0.4, 0.0);
-    // glShadeModel(GL_SMOOTH);
+    glShadeModel(GL_SMOOTH);
 
     // glEnable(GL_CULL_FACE);
 
@@ -109,24 +109,23 @@ void render() {
 	// 镜面反射光
 	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
 	glMaterialf(GL_FRONT, GL_SHININESS, 10.0f);
+    
+    // 设置旋转体的母线顶点序列，从下到上设置
+    // 72 指分段为72段
+    // 调用draw函数完成绘制。
 
     Rotator({
         Point(0.1, 0),
         Point(1, 0),
         Point(1.1, 0.2),
+        Point(1.25, 0.25),
         Point(1.25, 0.5),
         Point(1.1, 0.9),
-        Point(0.85, 1.2),
-        Point(0.55, 1.5),
+        Point(0.9, 1.2),
+        Point(0.8, 1.5),
         Point(0.85, 1.75),
         Point(1.0, 2)
-    }, 36).draw();
-
-    // Rotator({
-    //     Point(1, 0),
-    //     Point(0.5, 0.5)
-    // }, 8).draw();
-
+    }, 72).draw();
 
     glFlush();
     glutSwapBuffers();
