@@ -1,12 +1,12 @@
 #include <vector>
 #include "Point.h"
 
-#define ROTATOR_COLOR 1, 1, 1
+#define ROTATOR_COLOR 0.5f, 0.5f, 0.5f
 
 class Rotator {
     
     public:
-    Rotator(const std::vector<Point> &line, int count = 36): line(line), count(count) {};
+    Rotator(const std::vector<Point> &line, int count = 8): line(line), count(count) {};
     void draw();
     
     private:

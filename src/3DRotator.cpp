@@ -42,7 +42,25 @@ void init() {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glClearColor(0.1, 0.1, 0.4, 0.0);
-    glShadeModel(GL_SMOOTH);
+    // glShadeModel(GL_SMOOTH);
+
+    // glEnable(GL_CULL_FACE);
+
+    glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+
+    GLfloat ambient[] = { .3f,.3f,.3f,1.f };
+	GLfloat diffuse[] = { .7f,.7f,.7f,1.f };
+	GLfloat specular[] = { .5f,.5f,.5f,1.f };
+
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+
+    GLfloat position[] = { 5.0f,5.0f,0.f,1.f };
+	glLightfv(GL_LIGHT0, GL_POSITION, position);
+
+
 }
 
 // 画坐标轴
@@ -51,18 +69,18 @@ void showCoordinateAxis() {
     glBegin(GL_LINES);
     // X
     glColor3f(1, 0, 0);
-    glVertex3f(-0.2f, 0, 0);
-    glVertex3f(0.2f, 0, 0);
+    glVertex3f(-2.f, 0, 0);
+    glVertex3f(2.f, 0, 0);
     
     // Y
     glColor3f(0, 1, 0);
-    glVertex3f(0, -0.2f, 0);
-    glVertex3f(0, 0.2f, 0);
+    glVertex3f(0, -2.f, 0);
+    glVertex3f(0, 2.f, 0);
 
     // Z
     glColor3f(0, 0, 1);
-    glVertex3f(0, 0, -0.2f);
-    glVertex3f(0, 0, 0.2f);
+    glVertex3f(0, 0, -2.f);
+    glVertex3f(0, 0, 2.f);
 
     glEnd();
 }
@@ -73,14 +91,41 @@ void render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
  
     glPushMatrix();
-    float cax = cos(time);
-    float caz = sin(time);
-    gluLookAt(cax, 1, caz, 0, 0, 0, 0, 1, 0);
+    float cax = cos(time) * 5;
+    float caz = sin(time) * 5;
+    gluLookAt(cax, 2.5f, caz, 0, 0, 0, 0, 1, 0);
     time += 0.001;
 
     showCoordinateAxis();
 
-    Rotator({Point(0.3, 0.3), Point(0.2, 0.15), Point(0.2, -0.15), Point(0.3, -0.3)}).draw();
+    GLfloat green[] = { 0.0f,0.2f,0.1f,1.0f };
+	GLfloat yellow[] = { 0.7f,0.6f,0.1f,1.0f };
+	GLfloat white[] = { 1.0f,1.0f,1.0f,1.0f };
+	GLfloat gray[] = {0.2f, 0.2f, 0.2f, 1.0f};
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT, gray);
+	// 漫反射光
+	glMaterialfv(GL_FRONT, GL_DIFFUSE , yellow);
+	// 镜面反射光
+	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+	glMaterialf(GL_FRONT, GL_SHININESS, 10.0f);
+
+    Rotator({
+        Point(0.1, 0),
+        Point(1, 0),
+        Point(1.1, 0.2),
+        Point(1.25, 0.5),
+        Point(1.1, 0.9),
+        Point(0.85, 1.2),
+        Point(0.55, 1.5),
+        Point(0.85, 1.75),
+        Point(1.0, 2)
+    }, 36).draw();
+
+    // Rotator({
+    //     Point(1, 0),
+    //     Point(0.5, 0.5)
+    // }, 8).draw();
 
 
     glFlush();

@@ -7,17 +7,43 @@ using namespace std;
 
 void Rotator::draw() {
 
-    vector<Point> drawingLine = line;
+    vector<Point> beforLine = line;
+    vector<Point> afterLine = rotateLine(beforLine, (2 * M_PI / count));
     for (int i = 0; i < count; i++) {
-        glBegin(GL_LINE_STRIP);
-        glColor3f(ROTATOR_COLOR);
-        for (Point p : drawingLine) {
-            glVertex3f(p.x, p.y, p.z);
-            // cout << sqrt(pow(p.x, 2) + pow(p.z, 2)) << endl;
-        } 
-        glEnd();
-        drawingLine = rotateLine(line, (2 * M_PI / count) * (float)(i + 1));
+        for (int j = 0; j < beforLine.size() - 1; j++) {
+            drawFace(beforLine[j], afterLine[j], afterLine[j+1], beforLine[j+1]);
+        }
+        beforLine = afterLine;
+        afterLine = rotateLine(beforLine, (2 * M_PI / count));
     }
+}
+
+void Rotator::drawFace(Point p1, Point p2, Point p3, Point p4) {
+    Point n = cross((p2 - p1), (p4 - p2));
+    // Point n = cross(p3 - p2, p1 - p2);
+    n.norm();
+
+    // cout << (p2 - p1) * n << " " << (p4 - p2) * n << endl;
+    
+    // 画出面的法向量
+    glBegin(GL_LINES);
+    glColor3f(1, 0, 0);
+    Point b = p4;
+    Point e = b + n * 0.5;
+    glVertex3f(b.x, b.y, b.z);
+    glVertex3f(e.x, e.y, e.z);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3f(ROTATOR_COLOR);
+    glNormal3f(n.x, n.y, n.z);
+
+    glVertex3f(p1.x, p1.y, p1.z);
+    glVertex3f(p2.x, p2.y, p2.z);
+    glVertex3f(p3.x, p3.y, p3.z);
+    glVertex3f(p4.x, p4.y, p4.z);
+    glEnd();
+
 }
 
 vector<Point> Rotator::rotateLine(const vector<Point> &line, float angle) {
